@@ -13,10 +13,12 @@ return new class extends Migration
     {
         Schema::create('communities', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('name')->unique(); //TODO: Добавить связь один ко многим для юзеров (для подписок)
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->text('description');
             $table->foreignId('creator_id')->constrained('users')->onDelete('cascade');
             $table->timestamps();
+            $table->softDeletesDatetime();
         });
     }
 

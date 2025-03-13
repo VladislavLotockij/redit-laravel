@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('community_id')->constrained()->onDelete('cascade');
             $table->string('title');
             $table->text('content');
-            $table->string('image')->nullable();
+            $table->string('image')->nullable(); //TODO: add vates (лайки коментарии)
             $table->timestamps();
             $table->softDeletes();
         });
