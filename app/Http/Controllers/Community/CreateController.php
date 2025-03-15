@@ -2,15 +2,20 @@
 
 namespace App\Http\Controllers\Community;
 
+use App\Actions\Community\CreateCommunityAction;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Community\StoreRequest;
-use App\Models\Community;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 class CreateController extends Controller
 {
+    private $createCommunity;
+
+    public function __construct(CreateCommunityAction $createCommunity)
+    {
+        $this->createCommunity = $createCommunity;
+    }
+
     public function create()
     {
         return Inertia::render('community/Create');
@@ -20,17 +25,7 @@ class CreateController extends Controller
     {
         $data = $request->validated();
 
-        $user = Auth::user();
-
-        // Создаем сообщество
-        $community = Community::create([
-            'creator_id' => $user->id,
-            'name' => $data['name'],
-            'description' => $data['description'],
-        ]);
-
-        // Подписываем создателя на сообщество
-        $community->followers()->attach($user->id);
+        $this->createCommunity->handle($data);
 
         return redirect()->route('home')->with('success', 'Комьюнити успешно создано');
     }

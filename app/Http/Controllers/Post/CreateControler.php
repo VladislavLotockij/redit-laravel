@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Post;
 
+use App\Actions\Post\CreatePostAction;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Post\StoreRequest;
 use App\Models\Community;
@@ -12,6 +13,12 @@ use Inertia\Inertia;
 
 class CreateControler extends Controller
 {
+    private $createPost;
+    public function __construct(CreatePostAction $createPost)
+    {
+        $this->createPost = $createPost;
+    }
+
     public function create()
     {
         $communities = Community::all();
@@ -25,14 +32,8 @@ class CreateControler extends Controller
     {
         $validatedData = $request->validated();
 
-        $post = Post::create([
-            'user_id' => Auth::id(),
-            'title' => $validatedData['title'],
-            'content' => $validatedData['content'],
-            'community_id' => $validatedData['community_id'],
-            'image' => $request->file('image') ? $request->file('image')->store('posts', 'public') : null,
-        ]);
+        $this->createPost->handle($request->validated() + ['image' => $request->file('image')]);
 
-        return redirect()->route('home')->with('success', 'Пост успешно создан!');
+        return redirect()->route('home')->with('success', 'Пост успешно создан!'); //TODO: поменять редирект
     }
 }
