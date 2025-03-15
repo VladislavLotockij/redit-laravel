@@ -11,14 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('communities', function (Blueprint $table) {
+        Schema::create('community_user', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->unique(); //TODO: Добавить связь один ко многим для юзеров (для подписок)
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->text('description');
-            $table->foreignId('creator_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('community_id')->constrained()->onDelete('cascade');
             $table->timestamps();
-            $table->softDeletesDatetime();
         });
     }
 
@@ -27,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('communities');
+        Schema::dropIfExists('community_user');
     }
 };

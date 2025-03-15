@@ -10,6 +10,12 @@ class Community extends Model
 {
     use HasFactory, SoftDeletes;
 
+    protected $fillable = [
+        'creator_id',
+        'name',
+        'description',
+    ];
+
     public function posts()
     {
         return $this->hasMany(Post::class);
@@ -20,7 +26,7 @@ class Community extends Model
         return $this->belongsTo(User::class, 'creator_id');
     }
 
-    public function subscribers()
+    public function followers()
     {
         return $this->belongsToMany(User::class, 'community_user');
     }

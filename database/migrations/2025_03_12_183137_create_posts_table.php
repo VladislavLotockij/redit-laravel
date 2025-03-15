@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->foreignId('community_id')->constrained()->onDelete('cascade');
             $table->string('title');
             $table->text('content');
+            $table->foreignId('community_id')->constrained()->onDelete('cascade');
             $table->string('image')->nullable(); //TODO: add vates (лайки коментарии)
             $table->timestamps();
             $table->softDeletes();
