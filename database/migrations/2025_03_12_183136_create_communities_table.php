@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('name')->unique();
             $table->text('description');
             $table->foreignId('creator_id')->constrained('users')->onDelete('cascade');
+            $table->string('avatar_url')->default('assets/default-community-avatar.svg');
             $table->unsignedBigInteger('followers_count')->default(0);
             $table->timestamps();
             $table->softDeletesDatetime();
