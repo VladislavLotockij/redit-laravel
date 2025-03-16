@@ -30,4 +30,16 @@ class Community extends Model
     {
         return $this->belongsToMany(User::class, 'community_user');
     }
+
+    public function subscribe(User $user)
+    {
+        $this->followers()->attach($user);
+        $this->increment('followers_count');
+    }
+    public function unsubscribe(User $user)
+    {
+        $this->followers()->detach($user);
+
+        $this->decrement('followers_count');
+    }
 }
