@@ -1,13 +1,17 @@
 <?php
 
 use App\Http\Controllers\Community\CreateController;
+use App\Http\Controllers\Community\SubscriptionCommunityController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Post\CreateControler;
+use App\Http\Middleware\ShareUserSubscriptions;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::get('/', function () {
-    return Inertia::render('Welcome');
-})->name('home');
+
+Route::get('/', [HomeController::class, 'index'])->name('home');
+
+
 
 Route::get('dashboard', function () {
     return Inertia::render('Dashboard');
@@ -15,6 +19,7 @@ Route::get('dashboard', function () {
 
 //Комюнити
 Route::middleware('auth')->prefix('community')->as('community.')->group(function () {
+    Route::get('/subscriptions', SubscriptionCommunityController::class)->name('subscriptions');
     Route::get('/create', [CreateController::class, 'create'])->name('create');
     Route::post('/', [CreateController::class, 'store'])->name('store');
 });

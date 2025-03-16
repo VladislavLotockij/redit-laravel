@@ -1,32 +1,32 @@
 <template>
-    <div class="flex">
-      <!-- Sidebar -->
-      <div class="bg-[#1a1a1a] p-4 shadow h-screen w-64 fixed top-20 left-0 border-r border-r-gray-300">
-        <h2 class="text-white font-bold text-xl mb-4">Сообщества</h2>
-        <ul>
-          <li v-for="community in communities" :key="community.id" class="text-white mb-2">
-            <a href="#" class="hover:text-gray-400">{{ community.name }}</a>
-          </li>
-        </ul>
-      </div>
+    <div class="bg-[#1a1a1a] p-4 shadow h-screen w-64 fixed top-20 left-0 border-r border-r-gray-300">
+      <h2 class="text-white font-bold text-xl mb-4">Сообщества</h2>
 
-      <!-- Основной контент -->
-      <div class="ml-64 pt-20 p-4"> <!-- Увеличил отступ сверху на 20px -->
-        <!-- Основной контент страницы -->
-        <h1>Основной контент страницы</h1>
-      </div>
+      <!-- Проверяем, есть ли данные -->
+      <ul v-if="subscribtionsUserCommunity.length > 0">
+        <li
+          v-for="community in subscribtionsUserCommunity"
+          :key="community.id"
+          class="text-white mb-2"
+        >
+          {{ community.name }}
+        </li>
+      </ul>
+
+      <!-- Если данных нет -->
+      <p v-else class="text-white">Вы не подписаны ни на одно сообщество.</p>
     </div>
   </template>
 
   <script setup lang="ts">
+  import { usePage } from '@inertiajs/vue3';
+  import { computed } from 'vue';
+
   interface Community {
     id: number;
     name: string;
   }
 
-  const communities: Community[] = [
-    { id: 1, name: 'Программирование' },
-    { id: 2, name: 'Кино' },
-    { id: 3, name: 'Игры' },
-  ];
+  const subscribtionsUserCommunity = computed(() => usePage().props.shareUserSubscriptions as Community[]);
+
   </script>
